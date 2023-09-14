@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="socketcluster-client.js"
+    ></script>
+    <script type="text/javascript">
+      // Initiate the connection to the server
+      let socket = socketClusterClient.create({
+        hostname: 'localhost',
+        secure: false,
+        port: 8000,
+        // Only necessary during debug if using a self-signed certificate
+        wsOptions: { rejectUnauthorized: false },
+      });
+
+      (async () => {
+        for await (let { error } of socket.listener(
+          'error',
+        )) {
+          console.error(error);
+        }
+      })();
+
+      (async () => {
+        for await (let event of socket.listener(
+          'connect',
+        )) {
+          console.log('Socket is connected');
+
+          let channelName = `amiEvent`;
+
+          for await (let data of socket.subscribe(
+            channelName,
+            { waitForAuth: false },
+          )) {
+            console.log(
+              `Received data from channel ${channelName}:`,
+              data,
+            );
+            processMessage(data, channelName);
+          }
+        }
+      })();
+
+      async function sendMessage(
+        message,
+        channel = 'amiEvent',
+      ) {
+        return socket.invokePublish(channel, message);
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <h1>Channel Tracker</h1>
+
+    <table id="dataTable" class="highlight">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Number</th>
+          <th>uniqueId</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be added here dynamically -->
+      </tbody>
+    </table>
+    <script
+      type="text/javascript"
+      src="channels.js"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "name": "asterisk events socket cluster",
+  "description": "An app to send socket cluster events",
+  "version": "1.0",
+  "contributors": [
+    {
+      "name": "Cameron Weeks",
+      "email": "cameron@backv.co"
+    }
+  ],
+  "dependencies": {
+    "@types/socketcluster-client": "^16.0.0",
+    "@types/socketcluster-server": "^17.3.0",
+    "dotenv": "^16.3.1",
+    "eetase": "^5.0.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "express": "^4.16.3",
+    "morgan": "^1.7.0",
+    "nodemon": "^2.0.22",
+    "prettier": "^3.0.3",
+    "sc-errors": "^2.0.1",
+    "scc-broker-client": "^9.0.1",
+    "serve-static": "^1.13.2",
+    "socketcluster-client": "^17.2.2",
+    "socketcluster-server": "^17.4.1",
+    "uuid": "^8.3.2"
+  },
+  "keywords": [
+    "websocket",
+    "server",
+    "realtime",
+    "cluster",
+    "scalable"
+  ],
+  "readmeFilename": "README.md",
+  "scripts": {
+    "start": "node server.js",
+    "start:watch": "./node_modules/nodemon/bin/nodemon.js server.js",
+    "start:docker": "./node_modules/nodemon/bin/nodemon.js /usr/src/app/server.js"
+  }
+}
