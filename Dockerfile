@@ -1,15 +1,24 @@
 FROM node:18.15.0-slim
 
-LABEL maintainer="Cameron Weeks"
-LABEL version="17.4.0"
-LABEL description="Docker File for Socket Cluster"
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-RUN mkdir -p /usr/src/
-WORKDIR /usr/src/
-COPY . /usr/src/
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-RUN npm install .
+# Install app dependencies
+RUN npm install
+
+# If you have global dependencies or tools, install them here
+# e.g., RUN npm install -g typescript
+
+# Copy the entire project into the container
+COPY . .
+
+# Compile the TypeScript code
+RUN npx tsc
 
 EXPOSE 8000
 
-CMD ["npm", "run", "start:docker"]
+# The command to run the compiled app
+CMD [ "node", "dist/index.js" ]
